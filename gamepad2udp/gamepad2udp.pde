@@ -1,7 +1,7 @@
 import hypermedia.net.*;
 import gamepadd.*;
 
-String ip = "192.168.1.254";
+String ip = "192.168.1.3";
 
 UDP port;
 UDP stbd;
@@ -18,8 +18,8 @@ int STK_SCALE = 500000;
 float DEAD_ZONE = 0.1f;
 
 void setup() {
-  port = new UDP(this, 9022);
-  stbd = new UDP(this, 9014);
+  port = new UDP(this, 9014);
+  stbd = new UDP(this, 9022);
   vert = new UDP(this, 9042);
 
   gamepad = new Gamepadd(this, STK_SCALE, DEAD_ZONE);
