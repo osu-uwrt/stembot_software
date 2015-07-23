@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import signal
 import socket
 import RPi.GPIO as GPIO

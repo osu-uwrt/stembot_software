@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 controller = open('/dev/input/js0','r')
 
 button = [0] * 32

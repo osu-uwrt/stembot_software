@@ -13,11 +13,11 @@ Usage
 
 SSH into the Raspberry Pi:
 
-    sudo ./pi-driver
+    sudo python pi-driver.py
 
 On the topside computer:
 
-    sudo ./ps3-driver
+    python ps3-driver.py
 
 Navigate to: [http://raspberrypi:8080](http://raspberrypi:8080)
 
