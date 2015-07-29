@@ -27,15 +27,15 @@ signal.signal(signal.SIGINT, shutdown)
 
 # UDP Constants
 
-ADDR = ('192.168.1.45', 1337)
+ADDR = ('192.168.1.4', 1337)
 
 # PWM Constants
 
 ZERO = 7.5
 FREQ = 50
-PORT = 18
-STBD = 16
-VERT = 12
+PORT = 12
+STBD = 18
+VERT = 16
 
 # PS3 Vector
 
