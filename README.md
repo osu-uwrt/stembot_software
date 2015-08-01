@@ -11,16 +11,18 @@ Contents
 Usage
 -----
 
-On the topside computer:
+Start the controller:
 
     sixad -s
     python ps3-driver.py
 
-SSH into the Raspberry Pi:
+Start the thrusters:
 
+    ssh pi@raspberrypi
+    raspberry
     sudo python pi-driver.py
     
-To view the video feed:
+View the video feed:
 * Navigate to [http://raspberrypi:8080](http://raspberrypi:8080).
 * Click the WebRTC link.
 * Click start.
