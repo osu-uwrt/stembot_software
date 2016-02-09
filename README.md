@@ -1,5 +1,10 @@
-OSU UWRT STEMbot
-================
+## STEMbot
+*STEM outreach/education mini-bot.*
+
+**The Underwater Robotics Team**  
+The Ohio State University
+
+<img src="http://underwaterrov.org.ohio-state.edu/img/renders/stembot.png" height="320" />
 
 Contents
 --------
@@ -48,4 +53,4 @@ Installation
     sudo apt-get update
     sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc
 
-From: [Linux Projects](http://www.linux-projects.org/modules/sections/index.php?op=viewarticle&artid=14)
+* Source: [Linux Projects](http://www.linux-projects.org/modules/sections/index.php?op=viewarticle&artid=14)
