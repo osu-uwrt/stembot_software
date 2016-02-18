@@ -6,6 +6,8 @@ The Ohio State University
 
 <img src="http://underwaterrov.org.ohio-state.edu/img/renders/stembot.png" height="320" />
 
+[Website](http://go.osu.edu/uwrt) [License](blob/master/LICENSE)
+
 Contents
 --------
 
