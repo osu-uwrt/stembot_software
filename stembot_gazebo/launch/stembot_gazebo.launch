@@ -1,0 +1,11 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find stembot_gazebo)/worlds/stembot.world"/>
+    <arg name="paused" value="true"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+  <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find stembot_description)/urdf/stembot.urdf -urdf -x 0 -y 0 -z 10 -model stembot" />
+</launch>
