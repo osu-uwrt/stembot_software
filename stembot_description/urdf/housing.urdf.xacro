@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Links -->
+
+  <link name="main_housing">
+    <visual>
+      <geometry>
+        <box size="${housing_x} ${housing_y} ${housing_z}" />
+      </geometry>
+      <material name="DarkGrey" />
+    </visual>
+  </link>
+
+  <xacro:macro name="endcap" params="prefix">
+    <link name="${prefix}_endcap">
+      <visual>
+        <geometry>
+          <box size="${endcap_x} ${endcap_y} ${endcap_z}" />
+        </geometry>
+        <material name="Grey" />
+      </visual>
+    </link>
+  </xacro:macro>
+  <xacro:endcap prefix="fwd" />
+  <xacro:endcap prefix="aft" />
+
+  <link name="fwd_plate">
+    <visual>
+      <geometry>
+        <box size="${fwd_plate_x} ${fwd_plate_y} ${fwd_plate_z}" />
+      </geometry>
+      <material name="FlatBlack" />
+    </visual>
+  </link>
+
+  <link name="aft_plate">
+    <visual>
+      <geometry>
+        <box size="${aft_plate_x} ${aft_plate_y} ${aft_plate_z}" />
+      </geometry>
+      <material name="FlatBlack" />
+    </visual>
+  </link>
+
+  <xacro:macro name="tube" params="prefix radius height color">
+    <link name="${prefix}_tube">
+      <visual>
+        <geometry>
+          <cylinder radius="${radius}" length="${height}" />
+        </geometry>
+        <material name="${color}" />
+      </visual>
+    </link>
+  </xacro:macro>
+  <xacro:tube prefix="inner" radius="${inner_radius}" height="${housing_z+0.0055}" color="DarkGrey" />
+  <xacro:tube prefix="outer" radius="${outer_radius}" height="${housing_z+0.0050}" color="Grey" />
+
+  <!-- Joints -->
+
+  <joint name="base_housing" type="fixed">
+    <parent link="base_link" />
+    <child link="main_housing" />
+  </joint>
+
+  <xacro:macro name="endcap_position" params="prefix reflect">
+    <joint name="${prefix}_endcap" type="fixed">
+      <origin xyz="${reflect*(housing_x+endcap_x)/2} 0 0" rpy="0 0 0" />
+      <parent link="main_housing" />
+      <child link="${prefix}_endcap" />
+    </joint>
+  </xacro:macro>
+  <xacro:endcap_position prefix="fwd" reflect="1" />
+  <xacro:endcap_position prefix="aft" reflect="-1" />
+
+  <joint name="fwd_plate" type="fixed">
+    <origin xyz="${(endcap_x+fwd_plate_x)/2} 0 0" rpy="0 0 0" />
+    <parent link="fwd_endcap" />
+    <child link="fwd_plate" />
+  </joint>
+
+  <joint name="aft_plate" type="fixed">
+    <origin xyz="-${(endcap_x+aft_plate_x)/2} 0 0" rpy="0 0 0" />
+    <parent link="aft_endcap" />
+    <child link="aft_plate" />
+  </joint>
+
+  <xacro:macro name="tube_position" params="prefix">
+    <joint name="${prefix}_tube" type="fixed">
+      <origin xyz="${tube_x} ${tube_y} ${tube_z}" rpy="0 0 0" />
+      <parent link="main_housing" />
+      <child link="${prefix}_tube" />
+    </joint>
+  </xacro:macro>
+  <xacro:tube_position prefix="inner" />
+  <xacro:tube_position prefix="outer" />
+
+</robot>

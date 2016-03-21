@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<robot name="stembot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Housing -->
+
+  <gazebo reference="main_housing">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+
+  <xacro:macro name="fwd_aft" params="prefix">
+    <gazebo reference="${prefix}_endcap">
+      <material>Gazebo/Grey</material>
+    </gazebo>
+    <gazebo reference="${prefix}_plate">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+  </xacro:macro>
+  <xacro:fwd_aft prefix="fwd" />
+  <xacro:fwd_aft prefix="aft" />
+
+  <gazebo reference="inner_tube">
+    <material>Gazebo/DarkGrey</material>
+  </gazebo>
+  <gazebo reference="outer_tube">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <!-- Rods -->
+
+  <xacro:macro name="rod_gazebo" params="prefix postfix">
+    <gazebo reference="${prefix}_rod_${postfix}">
+      <material>Gazebo/Grey</material>
+    </gazebo>
+  </xacro:macro>
+  <xacro:rod_gazebo prefix="fwd" postfix="1" />
+  <xacro:rod_gazebo prefix="fwd" postfix="2" />
+  <xacro:rod_gazebo prefix="fwd" postfix="3" />
+  <xacro:rod_gazebo prefix="fwd" postfix="4" />
+  <xacro:rod_gazebo prefix="aft" postfix="1" />
+  <xacro:rod_gazebo prefix="aft" postfix="2" />
+  <xacro:rod_gazebo prefix="aft" postfix="3" />
+  <xacro:rod_gazebo prefix="aft" postfix="4" />
+
+  <!-- Frame -->
+
+  <gazebo reference="frame_crossbar">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+  <gazebo reference="frame_plate">
+    <material>Gazebo/FlatBlack</material>
+  </gazebo>
+
+  <xacro:macro name="port_stbd" params="prefix">
+    <gazebo reference="${prefix}_frame_mount">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="${prefix}_frame_upper">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+    <gazebo reference="${prefix}_frame_lower">
+      <material>Gazebo/FlatBlack</material>
+    </gazebo>
+  </xacro:macro>
+  <xacro:port_stbd prefix="port" />
+  <xacro:port_stbd prefix="stbd" />
+
+</robot>

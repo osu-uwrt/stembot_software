@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot name="stembot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.0019 0 -.0006" rpy="0 0 0" />
+      <mass value="${mass}" />
+      <xacro:insert_block name="moment" />
+    </inertial>
+  </link>
+
+  <xacro:include filename="properties.urdf.xacro" />
+  <xacro:include filename="housing.urdf.xacro" />
+  <xacro:include filename="rods.urdf.xacro" />
+  <xacro:include filename="frame.urdf.xacro" />
+
+  <gazebo>
+    <plugin name="BuoyancyPlugin" filename="libBuoyancyPlugin.so">
+      <link name="base_link">
+        <center_of_volume>0 0 0</center_of_volume>
+        <volume>${volume}</volume>
+      </link>
+    </plugin>
+  </gazebo>
+
+  <xacro:include filename="material.gazebo.xacro" />
+
+</robot>

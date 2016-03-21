@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo -e "Running...\n    rosrun xacro xacro stembot.urdf.xacro > stembot.urdf"
+rosrun xacro xacro stembot.urdf.xacro > stembot.urdf || exit
+echo -e "Make complete\n...success"
+
+echo -e "Running...\n    check_urdf stembot.urdf"
+check_urdf stembot.urdf > /dev/null || exit
+echo -e "Check complete\n...success"
+
+echo -e "Running...\n    gz sdf -k stembot.urdf"
+gz sdf -k stembot.urdf || exit
+echo -e "...success\nRobot ready"

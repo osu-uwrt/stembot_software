@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Links -->
+
+  <xacro:macro name="fwd_rod" params="postfix">
+    <link name="fwd_rod_${postfix}">
+      <visual>
+        <xacro:insert_block name="cylinder_fix" />
+        <geometry>
+          <cylinder radius="${rod_radius}" length="${fwd_rod_ln}" />
+        </geometry>
+        <material name="Grey" />
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:fwd_rod postfix="1" />
+  <xacro:fwd_rod postfix="2" />
+  <xacro:fwd_rod postfix="3" />
+  <xacro:fwd_rod postfix="4" />
+
+  <xacro:macro name="aft_rod" params="postfix">
+    <link name="aft_rod_${postfix}">
+      <visual>
+        <xacro:insert_block name="cylinder_fix" />
+        <geometry>
+          <cylinder radius="${rod_radius}" length="${aft_rod_ln}" />
+        </geometry>
+        <material name="Grey" />
+      </visual>
+    </link>
+  </xacro:macro>
+
+  <xacro:aft_rod postfix="1" />
+  <xacro:aft_rod postfix="2" />
+  <xacro:aft_rod postfix="3" />
+  <xacro:aft_rod postfix="4" />
+
+  <!-- Joints -->
+
+  <xacro:macro name="fwd_rod_position" params="postfix reflect_y reflect_z">
+    <joint name="fwd_rod_${postfix}" type="fixed">
+      <origin xyz="-${(endcap_x+fwd_rod_ln)/2} ${reflect_y*(endcap_y/2-rod_radius)} ${reflect_z*(endcap_z/2-rod_radius)}" rpy="0 0 0" />
+      <parent link="fwd_endcap" />
+      <child link="fwd_rod_${postfix}" />
+    </joint>
+  </xacro:macro>
+
+  <xacro:fwd_rod_position postfix="1" reflect_y="-1" reflect_z="1" />
+  <xacro:fwd_rod_position postfix="2" reflect_y="1" reflect_z="1" />
+  <xacro:fwd_rod_position postfix="3" reflect_y="-1" reflect_z="-1" />
+  <xacro:fwd_rod_position postfix="4" reflect_y="1" reflect_z="-1" />
+
+  <xacro:macro name="aft_rod_position" params="postfix reflect_y reflect_z">
+    <joint name="aft_rod_${postfix}" type="fixed">
+      <origin xyz="${(endcap_x+aft_rod_ln)/2} ${reflect_y*(endcap_y/2-rod_radius)} ${reflect_z*(endcap_z/2-rod_radius)}" rpy="0 0 0" />
+      <parent link="aft_endcap" />
+      <child link="aft_rod_${postfix}" />
+    </joint>
+  </xacro:macro>
+
+  <xacro:aft_rod_position postfix="1" reflect_y="-1" reflect_z="1" />
+  <xacro:aft_rod_position postfix="2" reflect_y="1" reflect_z="1" />
+  <xacro:aft_rod_position postfix="3" reflect_y="-1" reflect_z="-1" />
+  <xacro:aft_rod_position postfix="4" reflect_y="1" reflect_z="-1" />
+
+</robot>

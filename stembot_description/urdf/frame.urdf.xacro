@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Links -->
+
+  <link name="frame_crossbar">
+    <visual>
+      <geometry>
+        <box size="${frame_thickness} ${frame_crossbar} ${rod_radius*2}" />
+      </geometry>
+      <material name="FlatBlack" />
+    </visual>
+  </link>
+
+  <link name="frame_plate">
+    <visual>
+      <geometry>
+        <box size="${frame_plate_x} ${frame_plate_y} ${frame_plate_z}" />
+      </geometry>
+      <material name="FlatBlack" />
+    </visual>
+  </link>
+
+  <xacro:macro name="mount" params="prefix">
+    <link name="${prefix}_frame_mount">
+      <visual>
+        <xacro:insert_block name="cylinder_fix" />
+        <geometry>
+          <cylinder radius="${frame_radius}" length="${frame_thickness}" />
+        </geometry>
+        <material name="FlatBlack" />
+      </visual>
+    </link>
+  </xacro:macro>
+  <xacro:mount prefix="port" />
+  <xacro:mount prefix="stbd" />
+
+  <xacro:macro name="upper" params="prefix reflect">
+    <link name="${prefix}_frame_upper">
+      <visual>
+        <origin xyz="0 ${reflect*frame_upper/2} ${frame_radius-rod_radius}" rpy="0 0 0" />
+        <geometry>
+          <box size="${frame_thickness} ${frame_upper} ${rod_radius*2}" />
+        </geometry>
+        <material name="FlatBlack" />
+      </visual>
+    </link>
+  </xacro:macro>
+  <xacro:upper prefix="port" reflect="-1" />
+  <xacro:upper prefix="stbd" reflect="1" />
+
+  <xacro:macro name="lower" params="prefix reflect">
+    <link name="${prefix}_frame_lower">
+      <visual>
+        <origin xyz="0 ${reflect*frame_lower/2} -${frame_radius-rod_radius}" rpy="0 0 0" />
+        <geometry>
+          <box size="${frame_thickness} ${frame_lower} ${rod_radius*2}" />
+        </geometry>
+        <material name="FlatBlack" />
+      </visual>
+    </link>
+  </xacro:macro>
+  <xacro:lower prefix="port" reflect="-1" />
+  <xacro:lower prefix="stbd" reflect="1" />
+
+  <!-- Joints -->
+
+  <joint name="frame_crossbar" type="fixed">
+    <origin xyz="${frame_mount_x} 0 -${frame_mount_z}" rpy="0 0 0" />
+    <parent link="main_housing" />
+    <child link="frame_crossbar" />
+  </joint>
+
+  <joint name="frame_plate" type="fixed">
+    <origin xyz="${(frame_thickness+frame_plate_x)/2} 0 0" rpy="0 0 0" />
+    <parent link="frame_crossbar" />
+    <child link="frame_plate" />
+  </joint>
+
+  <xacro:macro name="mount_position" params="prefix reflect">
+    <joint name="${prefix}_frame_mount" type="fixed">
+      <origin xyz="${frame_mount_x} ${reflect*(frame_mount_y+2*rod_radius+housing_y/2)} 0" rpy="0 0 0" />
+      <parent link="main_housing" />
+      <child link="${prefix}_frame_mount" />
+    </joint>
+  </xacro:macro>
+  <xacro:mount_position prefix="port" reflect="1" />
+  <xacro:mount_position prefix="stbd" reflect="-1" />
+
+  <xacro:macro name="upper_position" params="prefix reflect">
+    <joint name="${prefix}_frame_upper" type="fixed">
+      <origin xyz="0 0 0" rpy="${reflect*frame_angle} 0 0" />
+      <parent link="${prefix}_frame_mount" />
+      <child link="${prefix}_frame_upper" />
+    </joint>
+  </xacro:macro>
+  <xacro:upper_position prefix="port" reflect="-1" />
+  <xacro:upper_position prefix="stbd" reflect="1" />
+
+  <xacro:macro name="lower_position" params="prefix reflect">
+    <joint name="${prefix}_frame_lower" type="fixed">
+      <origin xyz="0 0 0" rpy="${reflect*frame_angle} 0 0" />
+      <parent link="${prefix}_frame_mount" />
+      <child link="${prefix}_frame_lower" />
+    </joint>
+  </xacro:macro>
+  <xacro:lower_position prefix="port" reflect="1" />
+  <xacro:lower_position prefix="stbd" reflect="-1" />
+
+</robot>
