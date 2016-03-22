@@ -1,4 +1,7 @@
 <launch>
+  <node name="joy" pkg="joy" type="joy_node" />
+  <node name="stembot_teleop" pkg="stembot_teleop" type="stembot_teleop" />
+  <node name="stembot_gazebo" pkg="stembot_gazebo" type="stembot_gazebo" />
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find stembot_gazebo)/worlds/stembot.world"/>
     <arg name="paused" value="true"/>
