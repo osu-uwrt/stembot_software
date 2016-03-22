@@ -4,33 +4,9 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="stembot" xmlns:xacro="http://ros.org/wiki/xacro">
-  <link name="base_link">
-    <inertial>
-      <origin rpy="0 0 0" xyz="0.0019 0 -.0006"/>
-      <mass value="3.4255"/>
-      <inertia ixx="0.0012" ixy="0.0000" ixz="0.0000" iyy="0.0322" iyz="0.0000" izz="0.0380"/>
-    </inertial>
-  </link>
-  <!-- Physics -->
-  <!-- Main Housing Components -->
-  <!-- Vetical Thruster Tube -->
-  <!-- Fore and Aft Rods -->
-  <!-- Thruster Mounting Frame -->
-  <!-- Miscellaneous -->
-  <!-- Colors -->
-  <material name="FlatBlack">
-    <color rgba=".1 .1 .1 1"/>
-  </material>
-  <material name="DarkGrey">
-    <color rgba=".175 .175 .175 1"/>
-  </material>
-  <material name="Grey">
-    <color rgba=".3 .3 .3 1"/>
-  </material>
-  <material name="GreyTransparent">
-    <color rgba=".5 .5 .5 .5"/>
-  </material>
-  <!-- Links -->
+  <!--               -->
+  <!-- Housing Links -->
+  <!--               -->
   <link name="main_housing">
     <visual>
       <geometry>
@@ -87,7 +63,9 @@
       <material name="Grey"/>
     </visual>
   </link>
-  <!-- Joints -->
+  <!--                -->
+  <!-- Housing Joints -->
+  <!--                -->
   <joint name="base_housing" type="fixed">
     <parent link="base_link"/>
     <child link="main_housing"/>
@@ -122,7 +100,9 @@
     <parent link="main_housing"/>
     <child link="outer_tube"/>
   </joint>
-  <!-- Links -->
+  <!--            -->
+  <!-- Rod Links  -->
+  <!--            -->
   <link name="fwd_rod_1">
     <visual>
       <origin rpy="0 1.57079632679 0" xyz="0 0 0"/>
@@ -195,7 +175,9 @@
       <material name="Grey"/>
     </visual>
   </link>
-  <!-- Joints -->
+  <!--             -->
+  <!-- Rod Joints  -->
+  <!--             -->
   <joint name="fwd_rod_1" type="fixed">
     <origin rpy="0 0 0" xyz="-0.0659 -0.0698 0.04125"/>
     <parent link="fwd_endcap"/>
@@ -236,7 +218,16 @@
     <parent link="aft_endcap"/>
     <child link="aft_rod_4"/>
   </joint>
-  <!-- Links -->
+  <!--             -->
+  <!-- Frame Links -->
+  <!--             -->
+  <link name="base_link">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0019 0 -.0006"/>
+      <mass value="3.4255"/>
+      <inertia ixx="0.0012" ixy="0.0000" ixz="0.0000" iyy="0.0322" iyz="0.0000" izz="0.0380"/>
+    </inertial>
+  </link>
   <link name="frame_crossbar">
     <visual>
       <geometry>
@@ -307,7 +298,9 @@
       <material name="FlatBlack"/>
     </visual>
   </link>
-  <!-- Joints -->
+  <!--              -->
+  <!-- Frame Joints -->
+  <!--              -->
   <joint name="frame_crossbar" type="fixed">
     <origin rpy="0 0 0" xyz="0.00945 0 -0.05"/>
     <parent link="main_housing"/>
@@ -348,15 +341,51 @@
     <parent link="stbd_frame_mount"/>
     <child link="stbd_frame_lower"/>
   </joint>
+  <!--               -->
+  <!-- URDF Material -->
+  <!--               -->
+  <material name="FlatBlack">
+    <color rgba=".1 .1 .1 1"/>
+  </material>
+  <material name="DarkGrey">
+    <color rgba=".175 .175 .175 1"/>
+  </material>
+  <material name="Grey">
+    <color rgba=".3 .3 .3 1"/>
+  </material>
+  <material name="GreyTransparent">
+    <color rgba=".5 .5 .5 .5"/>
+  </material>
+  <!--                -->
+  <!-- Gazebo Plugins -->
+  <!--                -->
   <gazebo>
+    <!-- Buoyancy -->
     <plugin filename="libBuoyancyPlugin.so" name="BuoyancyPlugin">
       <link name="base_link">
         <center_of_volume>0 0 0</center_of_volume>
         <volume>0.0032</volume>
       </link>
     </plugin>
+    <!-- Thruster Forces -->
+    <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
+      <bodyName>frame_plate</bodyName>
+      <topicName>vert_thruster_force</topicName>
+    </plugin>
+    <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
+      <bodyName>port_frame_mount</bodyName>
+      <topicName>port_thruster_force</topicName>
+    </plugin>
+    <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
+      <bodyName>stbd_frame_mount</bodyName>
+      <topicName>stbd_thruster_force</topicName>
+    </plugin>
   </gazebo>
-  <!-- Housing -->
+  <!--                  -->
+  <!-- Gazebo Material  -->
+  <!--                  -->
+  <!--                  -->
+  <!-- Housing          -->
   <gazebo reference="main_housing">
     <material>Gazebo/DarkGrey</material>
   </gazebo>
@@ -378,7 +407,8 @@
   <gazebo reference="outer_tube">
     <material>Gazebo/Grey</material>
   </gazebo>
-  <!-- Rods -->
+  <!--                  -->
+  <!-- Rods             -->
   <gazebo reference="fwd_rod_1">
     <material>Gazebo/Grey</material>
   </gazebo>
@@ -403,7 +433,8 @@
   <gazebo reference="aft_rod_4">
     <material>Gazebo/Grey</material>
   </gazebo>
-  <!-- Frame -->
+  <!--                  -->
+  <!-- Frame            -->
   <gazebo reference="frame_crossbar">
     <material>Gazebo/FlatBlack</material>
   </gazebo>

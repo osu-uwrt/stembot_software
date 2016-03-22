@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!--                -->
+  <!-- Gazebo Plugins -->
+  <!--                -->
+
+  <gazebo>
+
+      <!-- Buoyancy -->
+
+    <plugin name="BuoyancyPlugin" filename="libBuoyancyPlugin.so">
+      <link name="base_link">
+        <center_of_volume>0 0 0</center_of_volume>
+        <volume>${volume}</volume>
+      </link>
+    </plugin>
+
+    <!-- Thruster Forces -->
+
+    <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
+      <bodyName>frame_plate</bodyName>
+      <topicName>vert_thruster_force</topicName>
+    </plugin>
+
+    <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
+      <bodyName>port_frame_mount</bodyName>
+      <topicName>port_thruster_force</topicName>
+    </plugin>
+
+    <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
+      <bodyName>stbd_frame_mount</bodyName>
+      <topicName>stbd_thruster_force</topicName>
+    </plugin>
+
+  </gazebo>
+
+</robot>

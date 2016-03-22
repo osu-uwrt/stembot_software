@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!-- Links -->
+  <!--            -->
+  <!-- Rod Links  -->
+  <!--            -->
 
   <xacro:macro name="fwd_rod" params="postfix">
     <link name="fwd_rod_${postfix}">
@@ -37,7 +39,9 @@
   <xacro:aft_rod postfix="3" />
   <xacro:aft_rod postfix="4" />
 
-  <!-- Joints -->
+  <!--             -->
+  <!-- Rod Joints  -->
+  <!--             -->
 
   <xacro:macro name="fwd_rod_position" params="postfix reflect_y reflect_z">
     <joint name="fwd_rod_${postfix}" type="fixed">

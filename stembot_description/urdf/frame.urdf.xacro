@@ -1,7 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!-- Links -->
+  <!--             -->
+  <!-- Frame Links -->
+  <!--             -->
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.0019 0 -.0006" rpy="0 0 0" />
+      <mass value="${mass}" />
+      <xacro:insert_block name="moment" />
+    </inertial>
+  </link>
 
   <link name="frame_crossbar">
     <visual>
@@ -63,7 +73,9 @@
   <xacro:lower prefix="port" reflect="-1" />
   <xacro:lower prefix="stbd" reflect="1" />
 
-  <!-- Joints -->
+  <!--              -->
+  <!-- Frame Joints -->
+  <!--              -->
 
   <joint name="frame_crossbar" type="fixed">
     <origin xyz="${frame_mount_x} 0 -${frame_mount_z}" rpy="0 0 0" />

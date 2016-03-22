@@ -1,28 +1,87 @@
 <?xml version="1.0"?>
 <robot name="stembot" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <link name="base_link">
-    <inertial>
-      <origin xyz="0.0019 0 -.0006" rpy="0 0 0" />
-      <mass value="${mass}" />
-      <xacro:insert_block name="moment" />
-    </inertial>
-  </link>
-
-  <xacro:include filename="properties.urdf.xacro" />
   <xacro:include filename="housing.urdf.xacro" />
   <xacro:include filename="rods.urdf.xacro" />
   <xacro:include filename="frame.urdf.xacro" />
+  <xacro:include filename="material.urdf.xacro" />
 
-  <gazebo>
-    <plugin name="BuoyancyPlugin" filename="libBuoyancyPlugin.so">
-      <link name="base_link">
-        <center_of_volume>0 0 0</center_of_volume>
-        <volume>${volume}</volume>
-      </link>
-    </plugin>
-  </gazebo>
-
+  <xacro:include filename="control.gazebo.xacro" />
   <xacro:include filename="material.gazebo.xacro" />
+
+
+
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+
+
+  <xacro:property name="volume" value="0.0032" />
+  <xacro:property name="volume_x" value="0.0000" />
+  <xacro:property name="volume_y" value="0.0000" />
+  <xacro:property name="volume_z" value="0.0000" />
+  <xacro:property name="mass" value="3.4255" />
+  <xacro:property name="mass_x" value="0.0019" />
+  <xacro:property name="mass_y" value="0.0000" />
+  <xacro:property name="mass_z" value="-.0006" />
+  <xacro:property name="moment">
+    <inertia ixx="0.0012" ixy="0.0000" ixz="0.0000"
+             iyy="0.0322" iyz="0.0000"
+             izz="0.0380"/>
+  </xacro:property>
+
+
+
+  <xacro:property name="housing_x" value="0.2381" />
+  <xacro:property name="housing_y" value="0.1270" />
+  <xacro:property name="housing_z" value="0.0762" />
+
+  <xacro:property name="endcap_x" value="0.0254" />
+  <xacro:property name="endcap_y" value="0.1524" />
+  <xacro:property name="endcap_z" value="0.0953" />
+
+  <xacro:property name="fwd_plate_x" value="0.0095" />
+  <xacro:property name="fwd_plate_y" value="0.0699" />
+  <xacro:property name="fwd_plate_z" value="0.0575" />
+
+  <xacro:property name="aft_plate_x" value="0.0064" />
+  <xacro:property name="aft_plate_y" value="0.0508" />
+  <xacro:property name="aft_plate_z" value="0.0381" />
+
+  <xacro:property name="inner_radius" value="0.0381" />
+  <xacro:property name="outer_radius" value="0.0445" />
+
+  <xacro:property name="tube_x" value="0.0508" />
+  <xacro:property name="tube_y" value="0.0000" />
+  <xacro:property name="tube_z" value="0.0000" />
+
+
+
+  <xacro:property name="rod_radius" value="0.0064" />
+  <xacro:property name="fwd_rod_ln" value="0.1064" />
+  <xacro:property name="aft_rod_ln" value="0.1254" />
+
+
+
+  <xacro:property name="frame_mount_x" value="${(housing_x-frame_thickness)/2-fwd_rod_ln}" />
+  <xacro:property name="frame_mount_y" value="0.0375" />
+  <xacro:property name="frame_mount_z" value="0.0500" />
+
+  <xacro:property name="frame_plate_x" value="0.0445" />
+  <xacro:property name="frame_plate_y" value="0.0318" />
+  <xacro:property name="frame_plate_z" value="0.0064" />
+
+  <xacro:property name="frame_crossbar" value="0.0982" />
+  <xacro:property name="frame_upper" value="0.0550" />
+  <xacro:property name="frame_lower" value="0.0750" />
+
+  <xacro:property name="frame_thickness" value="0.0064" />
+  <xacro:property name="frame_angle" value="0.5943" />
+  <xacro:property name="frame_radius" value="0.0159" />
+
+
+
+  <xacro:property name="cylinder_fix">
+    <origin xyz="0 0 0" rpy="0 ${M_PI/2} 0" />
+  </xacro:property>
 
 </robot>

@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <robot name="stembot" xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <!-- Housing -->
+  <!--                  -->
+  <!-- Gazebo Material  -->
+  <!--                  -->
+  <!--                  -->
+  <!-- Housing          -->
 
   <gazebo reference="main_housing">
     <material>Gazebo/DarkGrey</material>
@@ -25,8 +29,8 @@
     <material>Gazebo/Grey</material>
   </gazebo>
 
-  <!-- Rods -->
-
+  <!--                  -->
+  <!-- Rods             -->
   <xacro:macro name="rod_gazebo" params="prefix postfix">
     <gazebo reference="${prefix}_rod_${postfix}">
       <material>Gazebo/Grey</material>
@@ -41,8 +45,8 @@
   <xacro:rod_gazebo prefix="aft" postfix="3" />
   <xacro:rod_gazebo prefix="aft" postfix="4" />
 
-  <!-- Frame -->
-
+  <!--                  -->
+  <!-- Frame            -->
   <gazebo reference="frame_crossbar">
     <material>Gazebo/FlatBlack</material>
   </gazebo>
