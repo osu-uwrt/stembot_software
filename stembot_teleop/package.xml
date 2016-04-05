@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>stembot_gazebo</name>
+  <name>stembot_teleop</name>
   <version>0.0.0</version>
   <description>The stembot_teleop package</description>
 

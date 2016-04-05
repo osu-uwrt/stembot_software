@@ -7,6 +7,9 @@
     <include>
       <uri>model://sun</uri>
     </include>
+    <!-- <include>
+      <uri>model://MYROBOT</uri>
+    </include> -->
   <model name="camera">
     <link name="link">
       <gravity>0</gravity>
