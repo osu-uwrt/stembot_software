@@ -33,8 +33,8 @@ ADDR = ('192.168.1.4', 1337)
 
 ZERO = 7.5
 FREQ = 50
-PORT = 12
-STBD = 18
+PORT = 18
+STBD = 12
 VERT = 16
 
 # PS3 Vector
