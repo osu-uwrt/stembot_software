@@ -4,6 +4,6 @@
 **The Underwater Robotics Team**  
 The Ohio State University
 
-<img src="http://underwaterrov.org.ohio-state.edu/img/renders/stembot.png" height="320" />
+![STEMbot](http://underwaterrov.org.ohio-state.edu/img/renders/stembot_180.png)
 
 [Website](http://go.osu.edu/uwrt) | [Documentation](DOC.md) | [License](LICENSE)
