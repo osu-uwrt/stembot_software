@@ -2,13 +2,16 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 
+def dc(pwm):
+    return (pwm*50)/10000
+
 # pin setup
 PORTSURGE = 8 # white wire
 STBDSURGE = 10 # grey
 PORTHEAVE = 12 # purple
 STBDHEAVE = 16 # green wire
 
-ZERO = 7.5 # number comes from neutral pwm converted to duty cycle
+ZERO = dc(149)# number comes from neutral pwm converted to duty cycle
 FREQ = 50
 
 # PWM Setup
