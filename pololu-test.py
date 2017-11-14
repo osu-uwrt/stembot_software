@@ -17,22 +17,16 @@ servo.setTarget(3,6000)  #set servo to move to center position
 sleep(5)
 
 servo.setTarget(0, 6200)
-sleep(2)
 servo.setTarget(1, 6200)
-sleep(2)
 servo.setTarget(2, 6200)
-sleep(2)
 servo.setTarget(3, 6200)
-sleep(2)
+
+sleep(3)
 
 servo.setTarget(0, 6000)
-sleep(2)
 servo.setTarget(1, 6000)
-sleep(2)
 servo.setTarget(2, 6000)
-sleep(2)
 servo.setTarget(3, 6000)
-sleep(2)
 
 
 servo.close()
