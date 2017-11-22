@@ -4,7 +4,6 @@ import math
 import RPi.GPIO as GPIO
 
 # SIGINT Handler
-
 def shutdown(signal, frame):
 
     print '\n   Stopping UDP...'
@@ -23,6 +22,9 @@ def shutdown(signal, frame):
     print '   Exiting...'
     exit(0)
 
+#-------#
+# SETUP #
+#-------#
 signal.signal(signal.SIGINT, shutdown)
 
 # UDP Constants
@@ -30,9 +32,11 @@ signal.signal(signal.SIGINT, shutdown)
 ADDR = ('192.168.1.4', 1337)
 
 # PWM Constants
-
 ZERO = 7.5
 FREQ = 50
+
+# Thruster Pin Numbers
+#TODO: Update for 4 thrusters
 PORT = 12
 STBD = 18
 VERT = 16
@@ -52,7 +56,7 @@ print '   Setting UDP bind...'
 sock.bind(ADDR)
 
 # PWM Setup
-
+#TODO: Update for 4 thrusters
 print '   Setting GPIO mode...'
 GPIO.setmode(GPIO.BOARD)
 
@@ -71,33 +75,35 @@ port.start(ZERO)
 stbd.start(ZERO)
 vert.start(ZERO)
 
-# The Loop
-
+#-----------#
+# Main Loop #
+#-----------#
 print '   Running...'
 while 1:
 
-    # Blocking Receive
-
+    # Look for PS3 input
+    # If we have one, great. If not, don't do anything.
     try:
         data = sock.recv(2)
     except socket.error as (code, msg):
         pass
 
-    # Update Vector
-
+    # Update current thrust vector based on the input.
     if data[0] == 'x':
-        x = ord(data[1]) - 127
+        x = ord(data[1]) - 127 # If we got an X, update the X.
     elif data[0] == 'y':
-        y = ord(data[1]) - 127
+        y = ord(data[1]) - 127 # If we got a Y, update the Y.
     elif data[0] == 'z':
-        z = ord(data[1]) - 127
-    else:
+        z = ord(data[1]) - 127 # If we got a Z, you get the idea.
+    else:                      # Otherwise, !?!?!?.
         print '!?!?!?'
         print data
-        print '!?!?!?'   
+        print '!?!?!?'
 
-    # Circularize and Rotate
+    #TODO: Find a new way to calculate the PWM for each of the 4 thrusters.
+    # This code only works for the old STEMbot, which had 3 thrusters.
 
+    # Calculate PWMs based on the input from the PS3 controller
     r = math.hypot(x, y)
     r = r if r < 127 else 127
     t = math.atan2(y, x)
@@ -105,18 +111,18 @@ while 1:
     p = r * math.sin(t)
     s = r * math.cos(t)
 
-    # Transform to Duty Cycle
-
+    # Transform PWM value (us) to Duty Cycle
+    #TODO: Update for 4 thrusters (equation should stay the same)
     p = .02 * p + ZERO
     s = .02 * s + ZERO
     v = .02 * z + ZERO
 
-    # Write to "Thrusters"
-
+    # Write the new PWM to "Thrusters"
+    #TODO: Update for 4 thrusters
     port.ChangeDutyCycle(p)
     stbd.ChangeDutyCycle(s)
     vert.ChangeDutyCycle(v)
 
     # Did it Crash?
-
+    #TODO: Update for 4 thrusters
     print '   p: %5.2f  |  s: %5.2f  |  v: %5.2f' % (p, s, v)
