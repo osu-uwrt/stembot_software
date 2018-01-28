@@ -11,14 +11,16 @@ def shutdown(signal, frame):
     sock.close()
 
     print '   Stopping PWM...'
-    port.stop()
-    stbd.stop()
-    vert.stop()
+    portsurge.stop()
+    stbdsurge.stop()
+    portheave.stop() #changed vert to portheave
+    stbdheave.stop() # added
 
     print '   Cleaning up...'
-    GPIO.cleanup(PORT)
-    GPIO.cleanup(STBD)
-    GPIO.cleanup(VERT)
+    GPIO.cleanup(PORTSURGE)
+    GPIO.cleanup(STBDSURGE)
+    GPIO.cleanup(PORTHEAVE) # changed from VERT to PORTHEAVE
+    GPIO.cleanup(STBDHEAVE) # added
 
     print '   Exiting...'
     exit(0)
@@ -30,7 +32,7 @@ signal.signal(signal.SIGINT, shutdown)
 
 # UDP Constants
 
-ADDR = ('192.168.1.4', 1337)
+ADDR = ('192.168.1.122', 1337)
 
 # PWM Constants
 
@@ -42,11 +44,12 @@ FREQ = 50
 # yellow/orange -> pi (PWM)
 # red goes to nothing
 
-#TODO: update for 4 thrusters (add one)
-PORT = 12 #TODO add surge
-STBD = 18 #TODO add surge
-VERT = 16 #TODO chnge to portheave/stbdheave
 
+PORTSURGE = 14 # white wire
+STBDSURGE = 15 # grey
+PORTHEAVE = 18 # purple
+STBDHEAVE = 20 # green wire
+# ground attached to blue
 # PS3 Vector
 
 x = 0
@@ -66,22 +69,23 @@ print '   Setting GPIO mode...'
 GPIO.setmode(GPIO.BOARD)
 
 print '   Setting GPIO pins...'
-GPIO.setup(PORT, GPIO.OUT)
-GPIO.setup(STBD, GPIO.OUT)
-GPIO.setup(VERT, GPIO.OUT)
-#TODO update for 4 thrusters (add)
+GPIO.setup(PORTSURGE, GPIO.OUT)
+GPIO.setup(STBDSURGE, GPIO.OUT)
+GPIO.setup(PORTHEAVE, GPIO.OUT) # changed VERT to PORTHEAVE
+GPIO.setup(STBDHEAVE, GPIO.OUT) # added
+
 
 print '   Setting PWM frequency...'
-port = GPIO.PWM(PORT, FREQ)
-stbd = GPIO.PWM(STBD, FREQ)
-vert = GPIO.PWM(VERT, FREQ)
-#TODO update for 4 thrusters (add)
+portsurge = GPIO.PWM(PORTSURGE, FREQ)
+stbdsurge = GPIO.PWM(STBDSURGE, FREQ)
+portheave = GPIO.PWM(PORTHEAVE, FREQ) # changed vert to portheave and VERT to PORTHEAVE
+stbdheave = GPIO.PWM(STBDHEAVE, FREQ) # added
 
 print '   Setting PWM duty cycle...'
-port.start(ZERO)
-stbd.start(ZERO)
-vert.start(ZERO)
-#TODO update for 4 thrusters (add)
+portsurge.start(ZERO)
+stbdsurge.start(ZERO)
+portheave.start(ZERO) # changed vert to portheave
+stbdheave.start(ZERO) # added
 
 # The Loop
 
@@ -112,7 +116,6 @@ while 1:
     # Circularize and Rotate
 
     #Calculates the PWM for easch thruster
-    #TODO only works for the old stembot with 3 thrusters. we need to fix it to work with 4?
 
     #calculates based on input from ps3 controller
     r = math.hypot(x, y)
@@ -123,18 +126,24 @@ while 1:
     s = r * math.cos(t)
 
     # Transforms PWM value (us) to Duty Cycle
-    #TODO update to 4 thrusters (should be able to use the same equation) consider renaming v to portheave and stbdheave (maybedivide by 2?)
     p = .02 * p + ZERO
     s = .02 * s + ZERO
-    v = .02 * z + ZERO
-    #TODO (add)
+    ph = (.02 * z + ZERO) / 2 # changed v to ph (for port heave) (also divided by 2 to account for double heave thrusters)
+    sh = (.02 * z + ZERO) / 2 # added (named sh for starboard heave) (also divided by 2 to account for double heave thrusters)
 
     # Write the new PWM to "Thrusters"
-    #TODO update for 4 Thrusters
-    port.ChangeDutyCycle(p)
-    stbd.ChangeDutyCycle(s)
-    vert.ChangeDutyCycle(v)
+
+    portsurge.ChangeDutyCycle(p)
+    stbdsurge.ChangeDutyCycle(s)
+    portheave.ChangeDutyCycle(ph) # changed vert to portheave and v to ph
+    stbdheave.ChangeDutyCycle(sh) # added
 
     # Did it Crash?
-    #TODO update to 4 thrusters (add)
-    print '   p: %5.2f  |  s: %5.2f  |  v: %5.2f' % (p, s, v)
+    print '   p: %5.2f  |  s: %5.2f  |  ph: %5.2f  |  sh: %5.2f' % (p, s, ph, sh) # changed v to ph and added sh
+
+    # What I did:
+    # Anywhere there was port, I changed it to portsurge
+    # Anywhere there was stbd, I changed it to stbdsurge
+    # Anywhere there was PORT, I changed it to PORTSURGE
+    # Anywhere there was STBD, I changed it to STBDSURGE
+    # Added comments throughout code to show non uniform changes (so we can check my work easier)
