@@ -66,7 +66,7 @@ sock.bind(ADDR)
 
 # PWM Setup
 print '   Setting GPIO mode...'
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM) #changed GPIO.BOARD to GPIO.BCM
 
 print '   Setting GPIO pins...'
 GPIO.setup(PORTSURGE, GPIO.OUT)
