@@ -128,8 +128,8 @@ while 1:
     # Transforms PWM value (us) to Duty Cycle
     p = .02 * p + ZERO
     s = .02 * s + ZERO
-    ph = (.02 * z + ZERO) / 2 # changed v to ph (for port heave) (also divided by 2 to account for double heave thrusters)
-    sh = (.02 * z + ZERO) / 2 # added (named sh for starboard heave) (also divided by 2 to account for double heave thrusters)
+    ph = (.02 * z/2 + ZERO) # changed v to ph (for port heave) (also divided z by 2 to account for double heave thrusters)
+    sh = (.02 * z/2 + ZERO) # added (named sh for starboard heave) (also divided z by 2 to account for double heave thrusters)
 
     # Write the new PWM to "Thrusters"
 
