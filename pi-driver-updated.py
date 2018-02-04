@@ -48,7 +48,7 @@ FREQ = 50
 PORTSURGE = 14 # white wire
 STBDSURGE = 15 # grey
 PORTHEAVE = 18 # purple
-STBDHEAVE = 20 # green wire
+STBDHEAVE = 23 # green wire
 # ground attached to blue
 # PS3 Vector
 
