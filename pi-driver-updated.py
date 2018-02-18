@@ -37,6 +37,11 @@ ADDR = ('192.168.1.122', 1337)
 
 # PWM Constants
 def dc(pwm):
+    if pwm > 1900:
+        pwm = 1900
+    if pwm < 1100:
+        pwm = 1400:
+    
     return (pwm*50)/10000
 
 
