@@ -36,7 +36,7 @@ ADDR = ('192.168.1.122', 1337)
 
 # PWM Constants
 
-ZERO = 7.5
+ZERO = 7.5 # number comes from neutral pwm converted to duty cycle
 FREQ = 50
 
 # Thruster PIN numbers (can be changed as long as they are then plugged into the right pin during set up)
@@ -86,6 +86,7 @@ portsurge.start(ZERO)
 stbdsurge.start(ZERO)
 portheave.start(ZERO) # changed vert to portheave
 stbdheave.start(ZERO) # added
+sleep(5) # needed for proper esc initialization
 
 # The Loop
 
