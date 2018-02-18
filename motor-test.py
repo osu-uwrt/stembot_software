@@ -39,7 +39,7 @@ sleep(8)
 # Start up the motors
 
 pwm = 1600
-dc = (FREQ * pwm) / 1000
+dc = (FREQ * pwm) / 10000
 
 print "Starting port surge"
 portsurge.ChangeDutyCycle(dc)
@@ -57,7 +57,7 @@ sleep(3)
 portheave.stop()
 
 print "Starting starboard heave"
-stbdsurge.ChangeDutyCycle(dc)
+stbdheave.ChangeDutyCycle(dc)
 sleep(3)
 stbdheave.stop()
 
