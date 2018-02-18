@@ -40,8 +40,8 @@ def dc(pwm):
     if pwm > 1900:
         pwm = 1900
     if pwm < 1100:
-        pwm = 1400:
-    
+        pwm = 1400
+
     return (pwm*50)/10000
 
 
