@@ -3,17 +3,17 @@ from time import sleep
 
 
 # pin setup
-PORTSURGE = 14 # white wire
-STBDSURGE = 15 # grey
-PORTHEAVE = 18 # purple
-STBDHEAVE = 23 # green wire
+PORTSURGE = 8 # white wire
+STBDSURGE = 10 # grey
+PORTHEAVE = 12 # purple
+STBDHEAVE = 16 # green wire
 
 ZERO = 7.5 # number comes from neutral pwm converted to duty cycle
 FREQ = 50
 
 # PWM Setup
 print '   Setting GPIO mode...'
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BOARD)
 
 print '   Setting GPIO pins...'
 GPIO.setup(PORTSURGE, GPIO.OUT)
@@ -33,7 +33,7 @@ portsurge.start(ZERO)
 stbdsurge.start(ZERO)
 portheave.start(ZERO)
 stbdheave.start(ZERO)
-sleep(5)
+sleep(8)
 
 
 # Start up the motors
