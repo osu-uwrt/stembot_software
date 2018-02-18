@@ -36,8 +36,11 @@ signal.signal(signal.SIGINT, shutdown)
 ADDR = ('192.168.1.122', 1337)
 
 # PWM Constants
+def dc(pwm):
+    return (pwm*50)/10000
 
-ZERO = 7.5 # number comes from neutral pwm converted to duty cycle
+
+ZERO = dc(1500) # number comes from neutral pwm converted to duty cycle
 FREQ = 50
 
 # Thruster PIN numbers (can be changed as long as they are then plugged into the right pin during set up)
@@ -128,10 +131,10 @@ while 1:
     s = r * math.cos(t)
 
     # Transforms PWM value (us) to Duty Cycle
-    p = .02 * p + ZERO
-    s = .02 * s + ZERO
-    ph = (.02 * z/2 + ZERO) # changed v to ph (for port heave) (also divided z by 2 to account for double heave thrusters)
-    sh = (.02 * z/2 + ZERO) # added (named sh for starboard heave) (also divided z by 2 to account for double heave thrusters)
+    p = dc(p + ZERO)
+    s = dc(s + ZERO)
+    ph = dc(z/2 + ZERO) # changed v to ph (for port heave) (also divided z by 2 to account for double heave thrusters)
+    sh = dc(z/2 + ZERO) # added (named sh for starboard heave) (also divided z by 2 to account for double heave thrusters)
 
     # Write the new PWM to "Thrusters"
 
