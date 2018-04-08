@@ -62,12 +62,6 @@ z = 0
 
 # UDP Setup
 
-print '   Setting UDP mode...'
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-print '   Setting UDP bind...'
-sock.bind(ADDR)
-
 # PWM Setup
 print '   Setting GPIO mode...'
 GPIO.setmode(GPIO.BCM) #changed GPIO.BOARD to GPIO.BCM
