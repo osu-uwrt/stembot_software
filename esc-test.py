@@ -4,31 +4,9 @@ import math
 import RPi.GPIO as GPIO
 from time import sleep
 
-def shutdown(signal, frame):
-
-    print '\n   Stopping UDP...'
-    sock.close()
-
-    print '   Stopping PWM...'
-    portsurge.stop()
-
-
-    print '   Cleaning up...'
-    GPIO.cleanup(PORTSURGE)
-
-
-    print '   Exiting...'
-    exit(0)
-
-
 #-------#
 # SETUP #
 #-------#
-signal.signal(signal.SIGINT, shutdown)
-
-# UDP Constants
-
-ADDR = ('192.168.1.122', 1337)
 
 # PWM Constants
 def dc(pwm):
@@ -43,24 +21,13 @@ def dc(pwm):
 ZERO = dc(1500) # number comes from neutral pwm converted to duty cycle
 FREQ = 50
 
-# Thruster PIN numbers (can be changed as long as they are then plugged into the right pin during set up)
-# brown wire -> ground
-# yellow/orange -> pi (PWM)
-# red goes to nothing
-
-
 PORTSURGE = 14 # white wire
-STBDSURGE = 15 # grey
-PORTHEAVE = 18 # purple
-STBDHEAVE = 23 # green wire
 # ground attached to blue
-# PS3 Vector
 
+# PS3 Vector
 x = 0
 y = 0
 z = 0
-
-# UDP Setup
 
 # PWM Setup
 print '   Setting GPIO mode...'
