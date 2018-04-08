@@ -4,6 +4,23 @@ import math
 import RPi.GPIO as GPIO
 from time import sleep
 
+def shutdown(signal, frame):
+
+    print '\n   Stopping UDP...'
+    sock.close()
+
+    print '   Stopping PWM...'
+    portsurge.stop()
+
+
+    print '   Cleaning up...'
+    GPIO.cleanup(PORTSURGE)
+
+
+    print '   Exiting...'
+    exit(0)
+
+
 #-------#
 # SETUP #
 #-------#
