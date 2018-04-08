@@ -125,7 +125,7 @@ while 1:
 
     # Circularize and Rotate
 
-    #Calculates the PWM for easch thruster
+    #Calculates the PWM for each thruster
 
     #calculates based on input from ps3 controller
     r = math.hypot(x, y)
