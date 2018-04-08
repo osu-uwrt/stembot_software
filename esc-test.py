@@ -70,3 +70,4 @@ sleep(5) # needed for proper esc initialization
 
 print '   Running...'
 while 1:
+    sleep(5)
