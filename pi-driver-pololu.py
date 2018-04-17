@@ -1,6 +1,7 @@
 import signal
 import socket
 import math
+import maestro
 from time import sleep
 
 # SIGINT Handler
@@ -15,6 +16,21 @@ def shutdown(signal, frame):
 
     print '   Exiting...'
     exit(0)
+
+
+def pwmHeave(input):
+    if input < 14 and input > 0:
+	pwm = 1500
+    else:
+	pwm = 800/130 * (input + 60) + 1100
+    return pwm
+
+def pwmSurge(input):
+    if input < 14 and input > 0:
+	pwm = 1500
+    else:
+	pwm = 800/255 * (input + 120) + 1100
+    return pwm
 
 #-------#
 # SETUP #
@@ -37,6 +53,10 @@ def dc(pwm):
 
 ZERO = dc(1500) # number comes from neutral pwm converted to duty cycle
 FREQ = 50
+
+# Set up pololu
+
+servo = maestro.Controller("/dev/ttyACM0")
 
 # Thruster PIN numbers (can be changed as long as they are then plugged into the right pin during set up)
 # brown wire -> ground
@@ -111,36 +131,30 @@ while 1:
     # Circularize and Rotate
 
     #Calculates the PWM for each thruster
+    #Calculates based on input from ps3 controller
 
-    #calculates based on input from ps3 controller
     r = math.hypot(x, y)
     r = r if r < 127 else 127
     t = math.atan2(y, x)
     t -= math.pi / 4
-    p = r * math.sin(t)
-    s = r * math.cos(t)
-
-    # Transforms PWM value (us) to Duty Cycle
-    # p = dc(p + ZERO)
-    # s = dc(s + ZERO)
-    # ph = dc(z/2 + ZERO) # changed v to ph (for port heave) (also divided z by 2 to account for double heave thrusters)
-    # sh = dc(z/2 + ZERO) # added (named sh for starboard heave) (also divided z by 2 to account for double heave thrusters)
+    p = r * math.sin(t) + ZERO
+    s = r * math.cos(t) + ZERO
+    ph = z/2 + ZERO
+    sh = z/2 + ZERO
 
     # Write the new PWM to "Thrusters"
 
+    servo.setTarget(PORTSURGE, 4 * int(pwmSurge(p)))
 
-    servo.setTarget(PORTSURGE, 4 * p)
-    sleep(.1)
-    servo.setTarget(STBDSURGE, 4 * s)
-    sleep(.1)
-    servo.setTarget(PORTHEAVE, 4 * ph)
-    sleep(.1)
-    servo.setTarget(STBDHEAVE, 4 * sh)
-    sleep(.1)
+    servo.setTarget(STBDSURGE, 4 * int(pwmSurge(s)))
+
+    servo.setTarget(PORTHEAVE, 4 * int(pwmHeave(ph)))
+
+    servo.setTarget(STBDHEAVE, 4 * int(pwmHeave(sh)))
 
 
     # Did it Crash?
-    print '   p: %5.2f  |  s: %5.2f  |  ph: %5.2f  |  sh: %5.2f' % (p, s, ph, sh) # changed v to ph and added sh
+    print '   p: %5.2f  |  s: %5.2f  |  ph: %5.2f  |  sh: %5.2f' % (pwmSurge(p), pwmSurge(s), pwmHeave(ph), pwmHeave(sh)) # changed v to ph and added sh
 
     # What I did:
     # Anywhere there was port, I changed it to portsurge
