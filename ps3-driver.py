@@ -26,7 +26,7 @@ def rectify_axis(byte):
 
 # UDP Constants
 
-ADDR = ('192.168.1.122', 1337)
+ADDR = ('192.168.1.112', 1337)
 
 # PS3 Read Buffer
 

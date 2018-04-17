@@ -23,7 +23,7 @@ signal.signal(signal.SIGINT, shutdown)
 
 # UDP Constants
 
-ADDR = ('192.168.1.122', 1337)
+ADDR = ('192.168.1.112', 1337) #stembot , port number
 
 # PWM Constants
 def dc(pwm):
