@@ -10,17 +10,8 @@ def shutdown(signal, frame):
     print '\n   Stopping UDP...'
     sock.close()
 
-    print '   Stopping PWM...'
-    portsurge.stop()
-    stbdsurge.stop()
-    portheave.stop() #changed vert to portheave
-    stbdheave.stop() # added
-
-    print '   Cleaning up...'
-    GPIO.cleanup(PORTSURGE)
-    GPIO.cleanup(STBDSURGE)
-    GPIO.cleanup(PORTHEAVE) # changed from VERT to PORTHEAVE
-    GPIO.cleanup(STBDHEAVE) # added
+    print '\n   Stopping Pololu...'
+    servo.close()
 
     print '   Exiting...'
     exit(0)
