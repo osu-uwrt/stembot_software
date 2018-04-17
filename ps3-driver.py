@@ -36,6 +36,7 @@ packet = []
 
 print '   Setting UDP mode...'
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.settimeout(.001)
 
 print '   Setting UDP buffers...'
 right_x = ['x', 0]
