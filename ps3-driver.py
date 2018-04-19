@@ -26,7 +26,7 @@ def rectify_axis(byte):
 
 # UDP Constants
 
-ADDR = ('192.168.1.4', 1337)
+ADDR = ('192.168.1.112', 1337)
 
 # PS3 Read Buffer
 
@@ -36,6 +36,7 @@ packet = []
 
 print '   Setting UDP mode...'
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.settimeout(.001)
 
 print '   Setting UDP buffers...'
 right_x = ['x', 0]
