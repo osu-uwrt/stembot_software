@@ -10,6 +10,6 @@ The Ohio State University
     * Run this on the STEMbot's Raspberry pi.
     * It will listen for thrust commands over socket and turn thrusters
 
-![STEMbot](http://underwaterrov.org.ohio-state.edu/img/renders/stembot_180.png)
+![STEMbot](STEMbot.jpg)
 
 [Website](http://go.osu.edu/uwrt) | [Documentation](DOC.md) | [License](LICENSE)

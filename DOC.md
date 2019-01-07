@@ -26,14 +26,6 @@ Start the pi code if it isnt running (should automatically):
     sudo python go.py
     
 
-Installation
-------------
-
-**Code**
-
-    git clone https://github.com/osu-uwrt/stembot.git
-
-	
 Pi Setup
 --------
 
