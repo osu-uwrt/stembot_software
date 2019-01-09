@@ -1,5 +1,6 @@
 import signal
 import socket
+import subprocess
 from time import sleep
 
 # SIGINT Handler
@@ -15,13 +16,18 @@ def shutdown(signal, frame):
 	exit(0)
 
 # Set thruster percentages
+# About 6% is deadzone
 def set_thrusters(ps, ss, fh, ah):
 
-	data = []
-	data.extend(int(6000 + 20 * ps).to_bytes(2, byteorder='big'))
-	data.extend(int(6000 + 20 * ss).to_bytes(2, byteorder='big'))
-	data.extend(int(6000 + 20 * fh).to_bytes(2, byteorder='big'))
-	data.extend(int(6000 + 20 * ah).to_bytes(2, byteorder='big'))
+	data = bytearray()
+	data.append(int((6000 + 20 * ps)/256))
+	data.append(int((6000 + 20 * ps)%256))
+	data.append(int((6000 + 20 * ss)/256))
+	data.append(int((6000 + 20 * ss)%256))
+	data.append(int((6000 + 20 * fh)/256))
+	data.append(int((6000 + 20 * fh)%256))
+	data.append(int((6000 + 20 * ah)/256))
+	data.append(int((6000 + 20 * ah)%256))
 	s.sendall(data)
 
 signal.signal(signal.SIGINT, shutdown)
@@ -29,9 +35,9 @@ signal.signal(signal.SIGINT, shutdown)
 print('Connecting to STEMbot...')
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('192.168.1.112', 50000))
-
+print('Connected!')
 
 while 1:
-	set_thrusters(0.5, 0.5, 0.5, 0)
-	sleep(0.5)
+	speed = float(input("Speed: "))
+	set_thrusters(speed, speed, speed, speed)
                

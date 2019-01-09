@@ -1,3 +1,4 @@
+import signal
 import socket
 import maestro
 from time import sleep
@@ -17,14 +18,15 @@ def shutdown(signal, frame):
 	servo.close()
 	print('Exiting...')
 	exit(0)
-	
+
 def wait_for_connect():
-	
+
 	print('Waiting for connection...')
 	global conn
 	conn, addr = s.accept()
-	print('Connected to ', addr)
-	
+	print('Connected to: ')
+	print(addr)
+
 def stop_thrusters():
 
 	print('Stopping thrusters')
@@ -37,10 +39,12 @@ def stop_thrusters():
 	servo.setTarget(FWDHEAVE,6000)
 	servo.setAccel(AFTHEAVE,0)
 	servo.setTarget(AFTHEAVE,6000)
-	
-	
+
+
 signal.signal(signal.SIGINT, shutdown)
 
+print('Waiting for startup')
+sleep(30)
 print('Setting UDP mode...')
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind(('192.168.1.112', 50000))
@@ -61,16 +65,17 @@ wait_for_connect()
 
 while 1:
 
-    try:
-		data = sock.recv(8)
-		sock.send('0')
-    except:
+	try:
+		data = conn.recv(8)
+		conn.send('0')
+	except:
 		stop_thrusters()
 		wait_for_connect()
-		
+		continue
+
 	if not data:
 		continue
-		
+
 	servo.setTarget(PORTSURGE, ord(data[0]) * 256 + ord(data[1]))
 	servo.setTarget(STBDSURGE, ord(data[2]) * 256 + ord(data[3]))
 	servo.setTarget(FWDHEAVE, ord(data[4]) * 256 + ord(data[5]))

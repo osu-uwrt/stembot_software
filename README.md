@@ -7,7 +7,7 @@ The Ohio State University
 * `STEMbot-driver.py`
     * It will tell the STEMbot over socket what forces to apply on each thruster
 * `go.py`
-    * Run this on the STEMbot's Raspberry pi.
+    * Runs on the STEMbot's Raspberry pi.
     * It will listen for thrust commands over socket and turn thrusters
 
 ![STEMbot](STEMbot.jpg)
