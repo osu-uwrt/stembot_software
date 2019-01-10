@@ -4,48 +4,37 @@ STEMbot Documentation
 Contents
 --------
 
-* pi-driver - Starts the motor driver.
-* ps3-driver - Starts the controller.
-* reset-cam - Restarts the camera driver.
+* go - Pi side motor controller.
+* STEMbot-driver - Listens to controllers and tells STEMbot what to do.
 
 Usage
 -----
 
+Power STEMbot:
+
+	Plug in battery to ESCs
+	Plug portable charger into pi
+	Close STEMbot and plug into one of the teams's routers
+
 Start the controller:
 
-    sixad -s
-    python ps3-driver.py
+    python STEMbot-driver.py
 
-Start the thrusters:
+Start the pi code if it isnt running (should automatically):
 
     ssh pi@raspberrypi
-    raspberry
-    sudo python pi-driver.py
+    sudo python go.py
     
-View the video feed:
-* Navigate to [http://raspberrypi:8080](http://raspberrypi:8080).
-* Click the WebRTC link.
-* Click start.
 
-Troubleshooting
----------------
+Pi Setup
+--------
 
-If there's trouble with the camera:
-
-    ./reset-camera
-
-Installation
-------------
-
-**Controls**
-
-    git clone https://github.com/osu-uwrt/stembot.git
-
-**Camera:**
-
-    curl http://www.linux-projects.org/listing/uv4l_repo/lrkey.asc | sudo apt-key add -
-    deb http://www.linux-projects.org/listing/uv4l_repo/raspbian/ wheezy main
-    sudo apt-get update
-    sudo apt-get install uv4l uv4l-raspicam uv4l-raspicam-extras uv4l-webrtc
-
-* Source: [Linux Projects](http://www.linux-projects.org/modules/sections/index.php?op=viewarticle&artid=14)
+1. Install raspbian
+2. Set static ip of 192.168.1.112
+3. Place go.py in the home directory of pi
+4. Setup [maestro driver](https://github.com/FRC4564/Maestro).
+5. Add the following to /etc/rc.local to autorun go.py
+	exec 2> /tmp/rc.local.log
+	exec 1>&2
+	echo "rc Started"
+	sudo python /home/pi/go.py &
