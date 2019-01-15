@@ -47,11 +47,27 @@ print('Waiting for startup')
 sleep(30)
 print('Setting UDP mode...')
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(('192.168.1.112', 50000))
+
+connected = False
+
+while not connected:
+	try:
+		s.bind(('192.168.1.112', 50000))
+		connected = True
+	except:
+		sleep(1)
+
 s.listen(1);
 
 print('Connecting to maestro...')
-servo = maestro.Controller("/dev/ttyACM0")
+
+connected = False
+while not connected:
+	try:
+		servo = maestro.Controller("/dev/ttyACM0")
+		connected = True
+	except:
+		sleep(1)
 
 
 
