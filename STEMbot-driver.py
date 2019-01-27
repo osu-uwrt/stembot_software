@@ -1,7 +1,6 @@
 import signal
 import socket
 import subprocess
-from inputs import get_gamepad
 from time import sleep
 
 # SIGINT Handler
