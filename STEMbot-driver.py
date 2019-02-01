@@ -1,7 +1,6 @@
 import signal
 import socket
-import subprocess
-from inputs import get_gamepad
+import select
 from time import sleep
 
 # SIGINT Handler
@@ -37,53 +36,49 @@ def rectify_axis(byte):
 
 signal.signal(signal.SIGINT, shutdown)
 
-print('Connecting to STEMbot...')
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('192.168.1.112', 50000))
-print('Connected!')
-
 controller = open('/dev/input/js0','r')
-packet = []
-
-heave = 0
-surge = 0
-turn = 0
 
 while 1:
-	# Blocking Receive
-	
+	print('Connecting to STEMbot...')
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.connect(('192.168.1.112', 50000))
+	print('Connected!')
 
-	packet += [int(str(hex(ord(controller.read(1)))), 16)]
+	packet = []
 
+	heave = 0
+	surge = 0
+	turn = 0
 
-	# Process Packet
-
-	if len(packet) == 8:
-
-
-		# Is it a Stick?
-
-
-		if packet[6] == 2:
-
-
-			# Right Stick X Update
-
-			if packet[7] == 3:
-				turn = (rectify_axis(packet[5])-128)/128.0
-
-			# Right Stick Y Update
-
-			elif packet[7] == 4:
-				surge = (rectify_axis(packet[5])-128)/128.0
-
-			# Left Stick Y Update
-
-			elif packet[7] == 1:
-				heave = (rectify_axis(packet[5])-128)/128.0
-		packet = []
+	while 1:
 		
-		set_thrusters((surge - turn) *50, (surge + turn) * 50, heave*100, heave * 100)
+		readable, writable, exceptional = select.select([s], [], [s], 0)
+		
+		for socket in readable:
+			data = socket.recv(1024)
+			if not data:
+				socket.close()
+				break
+			print(data.encode())
+			
+		packet += [int(str(hex(ord(controller.read(1)))), 16)]
+		
+		# Process Packet
+		if len(packet) == 8:
+			# Is it a Stick?
+			if packet[6] == 2:
+				# Right Stick X Update
+				if packet[7] == 3:
+					turn = (rectify_axis(packet[5])-128)/128.0
+				# Right Stick Y Update
+				elif packet[7] == 4:
+					surge = (rectify_axis(packet[5])-128)/128.0
+				# Left Stick Y Update
+				elif packet[7] == 1:
+					heave = (rectify_axis(packet[5])-128)/128.0
+			packet = []
+			
+			set_thrusters((surge - turn) *50, (surge + turn) * 50, heave*100, heave * 100)
 	
 
                
