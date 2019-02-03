@@ -35,9 +35,8 @@ def rectify_axis(byte):
     return byte
 
 def print_voltage(value):
-        value=int(value.split("\n")[-2])
-        voltage=str(round(value*12.1/867.0,2))
-        print("Voltage: " + voltage)
+        voltage=value*12.1/840.0
+        print(voltage)
 
 signal.signal(signal.SIGINT, shutdown)
 
@@ -64,7 +63,7 @@ while 1:
 			if not data:
 				socket.close()
 				break
-			print_voltage(data.encode())
+			print_voltage(int(data.encode()))
 			
 		packet += [int(str(hex(ord(controller.read(1)))), 16)]
 		
