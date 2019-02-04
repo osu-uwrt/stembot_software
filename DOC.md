@@ -38,3 +38,6 @@ Pi Setup
 	exec 1>&2
 	echo "rc Started"
 	sudo python /home/pi/go.py &
+6. Download and install Maestro Control Center(follow instructions on https://www.pololu.com/docs/0J40/3.a)
+7. Connect the Maestro to the computer and on the Maestro Control Center in the Channel Settings tab, change the mode of channel 6 to Input and apply settings.
+8. Connect the Maestro back to the Raspberry Pi.
