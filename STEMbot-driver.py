@@ -78,6 +78,3 @@ while 1:
 						heave = (rectify_axis(packet[5])-128)/128.0
 				packet = []
 				set_thrusters((surge - turn) *25, (surge + turn) * 25, heave*25, heave * 25)
-	
-
-               
