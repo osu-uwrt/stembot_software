@@ -27,7 +27,7 @@ def set_thrusters(ps, ss, fh, ah):
 	data.append(int((6000 + 20 * fh)%256))
 	data.append(int((6000 + 20 * -ah)/256))
 	data.append(int((6000 + 20 * -ah)%256))
-	s.sendall(data)
+	stembotConn.sendall(data)
 
 def rectify_axis(byte):
     byte = 127 - byte
@@ -46,7 +46,7 @@ def print_voltage(value):
 controller = open('/dev/input/js0','r')
 print('Connecting to STEMbot...')
 stembotConn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-stembotConn.connect(('192.168.1.112', 50000))
+stembotConn.connect(('192.168.1.112', 30000))
 print('Connected!')
 
 packet = []
