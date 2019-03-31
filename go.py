@@ -70,6 +70,8 @@ while not connected:
 stop_thrusters()
 print('STEMbot is online')
 
+data = []
+
 while 1:
 	readable, writable, exceptional = select.select(conections, [], conections, 0)
 
@@ -80,7 +82,7 @@ while 1:
 			conections.append(conn)
 		else:
 			try:
-				data = s.recv(1024)
+				data += s.recv(1024)
 			except:
 				conections.remove(s)
 				stop_thrusters()
@@ -91,10 +93,13 @@ while 1:
 				stop_thrusters()
 				print("Lost connection")
 				continue
-			servo.setTarget(PORTSURGE, ord(data[0]) * 256 + ord(data[1]))
-			servo.setTarget(STBDSURGE, ord(data[2]) * 256 + ord(data[3]))
-			servo.setTarget(FWDHEAVE, ord(data[4]) * 256 + ord(data[5]))
-			servo.setTarget(AFTHEAVE, ord(data[6]) * 256 + ord(data[7]))
+
+			while len(data) >= 8:
+				servo.setTarget(PORTSURGE, ord(data[0]) * 256 + ord(data[1]))
+				servo.setTarget(STBDSURGE, ord(data[2]) * 256 + ord(data[3]))
+				servo.setTarget(FWDHEAVE, ord(data[4]) * 256 + ord(data[5]))
+				servo.setTarget(AFTHEAVE, ord(data[6]) * 256 + ord(data[7]))
+				data = data[8:]
 			
 	#Read Voltage
 	voltage = 0
