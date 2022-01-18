@@ -21,7 +21,7 @@ def shutdown(signal, frame):
 	exit(0)
 
 def stop_thrusters():
-
+	
 	print('Stopping thrusters')
 	# Allow all accelerations and stop thrusters (4000 full back, 8000 full forward)
 	servo.setAccel(PORTSURGE,0)
@@ -61,7 +61,7 @@ print('Connecting to maestro...')
 connected = False
 while not connected:
 	try:
-		servo = maestro.Controller("/dev/ttyACM0")
+		servo = maestro.Controller("/dev/ttyS0")
 		connected = True
 	except:
 		sleep(1)
@@ -95,16 +95,16 @@ while 1:
 				continue
 
 			while len(data) >= 8:
-				servo.setTarget(PORTSURGE, ord(data[0]) * 256 + ord(data[1]))
-				servo.setTarget(STBDSURGE, ord(data[2]) * 256 + ord(data[3]))
-				servo.setTarget(FWDHEAVE, ord(data[4]) * 256 + ord(data[5]))
-				servo.setTarget(AFTHEAVE, ord(data[6]) * 256 + ord(data[7]))
+				servo.setTarget(PORTSURGE, data[0] * 256 + data[1])
+				servo.setTarget(STBDSURGE, data[2] * 256 + data[3])
+				servo.setTarget(FWDHEAVE, data[4] * 256 + data[5])
+				servo.setTarget(AFTHEAVE, data[6] * 256 + data[7])
 				data = data[8:]
 			
 	#Read Voltage
-	voltage = 0
-	send_voltage(voltage)
-	sleep(0.001)
+	#voltage = 0
+	#send_voltage(voltage)
+	#sleep(0.001)
 
 	
 	

@@ -42,7 +42,7 @@ battery = 0
 
 def print_voltage(value):
     global battery
-    value=int(value.split("\n")[-2])
+    value=int(value.split(b"\n")[-2])
     percent=(value*12.35/910-11.1)/1.5
     if battery == 0:
         battery = percent
@@ -60,7 +60,9 @@ def main():
         try:
             stembotConn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             stembotConn.settimeout(1)
-            stembotConn.connect(('192.168.1.112', 30000))
+            address = rospy.get_param("~address")
+            print("Connecting to:", address)
+            stembotConn.connect((address, 50000))
         except Exception as ex:
             print(ex)
             stembotConn = None
@@ -75,7 +77,7 @@ def main():
         for a in readable:
             if a == stembotConn: # If stembot activity
                 data = stembotConn.recv(1024)
-                print_voltage(data.encode())
+                #print_voltage(data)
         sleep(.01)
 
     stembotConn.close()

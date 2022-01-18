@@ -1,8 +1,15 @@
 <launch>
 
+  <arg name="address" default="stembot-phoenix.local" />
+
   <node pkg="joy" type="joy_node" name="joystick_driver">
-    <param name="dev" value="/dev/input/js0" />
+    <param name="dev" value="/dev/input/js1" />
+    <param name="coalesce_interval" value="0.02" />
+    <param name="autorepeat_rate" value="1" />
   </node>
 
-  <node pkg="stembot" type="stembot_driver.py" name="stembot_driver" output="screen" />
+  <node pkg="stembot" type="stembot_driver.py" name="stembot_driver" output="screen">
+    <param name="address" value="$(arg address)" />
+  </node>
+
 </launch>

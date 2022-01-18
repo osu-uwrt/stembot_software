@@ -18,11 +18,11 @@ Power STEMbot:
 
 Start the controller:
 
-    python STEMbot-driver.py
+    roslaunch stembot stem.launch address:=stembot-phoenix.local
 
 Start the pi code if it isnt running (should automatically):
 
-    ssh pi@raspberrypi
+    ssh pi@stembot-botname.local
     sudo python go.py
     
 
@@ -30,7 +30,7 @@ Pi Setup
 --------
 
 1. Install raspbian
-2. Set static ip of 192.168.1.112
+2. Set hostname to stembot-botname
 3. Place go.py in the home directory of pi
 4. Setup [maestro driver](https://github.com/FRC4564/Maestro).
 5. Add the following to /etc/rc.local to autorun go.py
