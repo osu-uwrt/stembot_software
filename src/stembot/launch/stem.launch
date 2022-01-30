@@ -3,7 +3,7 @@
   <arg name="address" default="stembot-phoenix.local" />
 
   <node pkg="joy" type="joy_node" name="joystick_driver">
-    <param name="dev" value="/dev/input/js1" />
+    <param name="dev" value="/dev/input/js0" />
     <param name="coalesce_interval" value="0.02" />
     <param name="autorepeat_rate" value="1" />
   </node>

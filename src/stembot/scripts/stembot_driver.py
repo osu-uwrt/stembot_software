@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 import socket
@@ -8,7 +8,6 @@ from sensor_msgs.msg import Joy
 
 
 stembotConn = None
-
 
 def joyCB(event):
     surge = event.axes[4]
@@ -22,20 +21,21 @@ def joyCB(event):
     if abs(heave) < .05:
         heave = 0
     packet = []
-    ps = (surge - turn) * 25
-    ss = (surge + turn) * 25 
-    fh = heave * 25
-    ah = heave * 25
+    ps = max((surge - turn), 0) * 75
+    ss = max((surge + turn), 0) * 75
+    fh = max(heave, 0) * 75
+    ah = max(heave, 0) * 75
 
     data = bytearray()
-    data.append(int((6000 + 20 * -ps)/256))
-    data.append(int((6000 + 20 * -ps)%256))
-    data.append(int((6000 + 20 * -ss)/256))
-    data.append(int((6000 + 20 * -ss)%256))
-    data.append(int((6000 + 20 * fh)/256))
-    data.append(int((6000 + 20 * fh)%256))
-    data.append(int((6000 + 20 * -ah)/256))
-    data.append(int((6000 + 20 * -ah)%256))
+
+    data.append(int((1000 + ps)/256))
+    data.append(int((1000 + ps)%256))
+    data.append(int((1000 + ss)/256))
+    data.append(int((1000 + ss)%256))
+    data.append(int((1000 + fh)/256))
+    data.append(int((1000 + fh)%256))
+    data.append(int((1000 + ah)/256))
+    data.append(int((1000 + ah)%256))
     stembotConn.sendall(data)
 
 battery = 0

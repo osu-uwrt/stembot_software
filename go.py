@@ -1,13 +1,19 @@
 import signal
 import socket
-import maestro
 import select
 from time import sleep
+
+import board
+import busio
+import adafruit_pca9685
 
 PORTSURGE = 0
 STBDSURGE = 1
 FWDHEAVE = 2
 AFTHEAVE = 3
+
+def pulse_to_duty(pulse_us):
+	return int(0xFFFF*(pulse_us/(1000000/hat.frequency)))
 
 def shutdown(signal, frame):
 
@@ -16,7 +22,7 @@ def shutdown(signal, frame):
 	for s in conections:
 		s.close()
 	print('Stopping Pololu...')
-	servo.close()
+	hat.deinit()
 	print('Exiting...')
 	exit(0)
 
@@ -24,14 +30,11 @@ def stop_thrusters():
 	
 	print('Stopping thrusters')
 	# Allow all accelerations and stop thrusters (4000 full back, 8000 full forward)
-	servo.setAccel(PORTSURGE,0)
-	servo.setTarget(PORTSURGE,6000)
-	servo.setAccel(STBDSURGE,0)  
-	servo.setTarget(STBDSURGE,6000)
-	servo.setAccel(FWDHEAVE,0)
-	servo.setTarget(FWDHEAVE,6000)
-	servo.setAccel(AFTHEAVE,0)
-	servo.setTarget(AFTHEAVE,6000)
+	neutral_signal = 1000
+	hat.channels[PORTSURGE].duty_cycle = pulse_to_duty(neutral_signal)
+	hat.channels[STBDSURGE].duty_cycle = pulse_to_duty(neutral_signal)
+	hat.channels[FWDHEAVE].duty_cycle = pulse_to_duty(neutral_signal)
+	hat.channels[AFTHEAVE].duty_cycle = pulse_to_duty(neutral_signal)
 	
 def send_voltage(voltage):
 	
@@ -58,14 +61,16 @@ conections = [incomingConnection]
 
 
 print('Connecting to maestro...')
+i2c = busio.I2C(board.SCL, board.SDA)
 connected = False
 while not connected:
 	try:
-		servo = maestro.Controller("/dev/ttyS0")
+		hat = adafruit_pca9685.PCA9685(i2c)
 		connected = True
 	except:
 		sleep(1)
 
+hat.frequency = 400
 
 stop_thrusters()
 print('STEMbot is online')
@@ -95,10 +100,10 @@ while 1:
 				continue
 
 			while len(data) >= 8:
-				servo.setTarget(PORTSURGE, data[0] * 256 + data[1])
-				servo.setTarget(STBDSURGE, data[2] * 256 + data[3])
-				servo.setTarget(FWDHEAVE, data[4] * 256 + data[5])
-				servo.setTarget(AFTHEAVE, data[6] * 256 + data[7])
+				hat.channels[PORTSURGE].duty_cycle = pulse_to_duty(data[0] * 256 + data[1])
+				hat.channels[STBDSURGE].duty_cycle = pulse_to_duty(data[2] * 256 + data[3])
+				hat.channels[FWDHEAVE].duty_cycle = pulse_to_duty(data[4] * 256 + data[5])
+				hat.channels[AFTHEAVE].duty_cycle = pulse_to_duty(data[6] * 256 + data[7])
 				data = data[8:]
 			
 	#Read Voltage
