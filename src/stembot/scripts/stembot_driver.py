@@ -8,26 +8,29 @@ from sensor_msgs.msg import Joy
 
 
 stembotConn = None
+thrustor_maximum = 200
 
 def joyCB(event):
-    surge = event.axes[4]
-    turn = event.axes[3]
-    heave = event.axes[1]
-
-    if abs(turn) < .05:
-        turn = 0
-    if abs(surge) < .05:
-        surge = 0
-    if abs(heave) < .05:
-        heave = 0
-    packet = []
-    ps = max((surge - turn), 0) * 75
-    ss = max((surge + turn), 0) * 75
-    fh = max(heave, 0) * 75
-    ah = max(heave, 0) * 75
+    heave_front = event.axes[5] # right trigger
+    heave_aft = event.axes[2] # left trigger
+    surge_port = event.axes[1] # left joystick
+    surge_starboard = event.axes[4] # right joystick
+        
+    ps = abs(max(thrustor_maximum * surge_port, 0))
+    ss = abs(max(thrustor_maximum * surge_starboard, 0))
+    fh = abs((heave_front - 1) / 2) * thrustor_maximum
+    ah = abs((heave_aft - 1) / 2) * thrustor_maximum
+    
+    if abs(heave_front) < .05:
+        heave_front = 0
+    if abs(heave_aft) < .05:
+        heave_aft = 0
+    if abs(surge_port) < .05:
+        surge_port = 0
+    if abs(surge_starboard) < .05:
+        surge_starboard = 0
 
     data = bytearray()
-
     data.append(int((1000 + ps)/256))
     data.append(int((1000 + ps)%256))
     data.append(int((1000 + ss)/256))

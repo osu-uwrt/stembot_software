@@ -6,6 +6,7 @@
     <param name="dev" value="/dev/input/js0" />
     <param name="coalesce_interval" value="0.02" />
     <param name="autorepeat_rate" value="1" />
+    <param name="default_trig_val" value="true" />
   </node>
 
   <node pkg="stembot" type="stembot_driver.py" name="stembot_driver" output="screen">
