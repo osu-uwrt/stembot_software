@@ -1,6 +1,5 @@
 *.pyc
 build
-devel
-logs
+install
+log
 .vscode
-.catkin_tools

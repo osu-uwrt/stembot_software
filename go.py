@@ -7,6 +7,10 @@ import adafruit_pca9685
 import board
 import busio
 
+# 
+# pi-side driver script for stembot.
+#
+ 
 PORTSURGE = 0
 STBDSURGE = 1
 FWDHEAVE = 2
