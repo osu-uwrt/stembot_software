@@ -32,12 +32,7 @@ Pi Setup
 1. Install raspbian
 2. Set hostname to stembot-botname
 3. Place go.py in the home directory of pi
-4. Setup [maestro driver](https://github.com/FRC4564/Maestro).
-5. Add the following to /etc/rc.local to autorun go.py
-	exec 2> /tmp/rc.local.log
-	exec 1>&2
-	echo "rc Started"
-	sudo python /home/pi/go.py &
-6. Download and install Maestro Control Center(follow instructions on https://www.pololu.com/docs/0J40/3.a)
-7. Connect the Maestro to the computer and on the Maestro Control Center in the Channel Settings tab, change the mode of channel 6 to Input and apply settings.
-8. Connect the Maestro back to the Raspberry Pi.
+4. Install servo hat library: `sudo pip3 install adafruit-circuitpython-pca9685`
+5. Place stembot.servce in `/etc/systemd/system`
+6. Run `systemd enable stembot.service` to enable running at boot
+7. Reboot the raspberry pi

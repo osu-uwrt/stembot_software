@@ -8,37 +8,66 @@ from sensor_msgs.msg import Joy
 
 
 stembotConn = None
-thrustor_maximum = 200
+thrustor_neutral = 1500
+thrustor_min     = 800
+thrustor_max     = 2200
+
+def truncate(value, min, max):
+    ret = value
+    if ret < min:
+        ret = min
+    elif ret > max:
+        ret = max
+    
+    return ret
 
 def joyCB(event):
-    heave_front = event.axes[5] # right trigger
-    heave_aft = event.axes[2] # left trigger
+    #triggers are (trigger value + 1) / 2 because joy_node reports them as -1 to 1. we want them from 0 to 1
+    heave_front = 1 - ((event.axes[5] + 1) / 2) # right trigger
+    heave_aft = 1 - ((event.axes[2] + 1) / 2) # left trigger
     surge_port = event.axes[1] # left joystick
     surge_starboard = event.axes[4] # right joystick
         
-    ps = abs(max(thrustor_maximum * surge_port, 0))
-    ss = abs(max(thrustor_maximum * surge_starboard, 0))
-    fh = abs((heave_front - 1) / 2) * thrustor_maximum
-    ah = abs((heave_aft - 1) / 2) * thrustor_maximum
+    # ps = abs(max(thrustor_maximum * surge_port, 0))
+    # ss = abs(max(thrustor_maximum * surge_starboard, 0))
+    # fh = abs((heave_front - 1) / 2) * thrustor_maximum
+    # ah = abs((heave_aft - 1) / 2) * thrustor_maximum
     
-    if abs(heave_front) < .05:
-        heave_front = 0
-    if abs(heave_aft) < .05:
-        heave_aft = 0
-    if abs(surge_port) < .05:
-        surge_port = 0
-    if abs(surge_starboard) < .05:
-        surge_starboard = 0
+    thrustor_range = (thrustor_max - thrustor_min) / 2
+    ps = (thrustor_range * surge_port) + thrustor_neutral
+    ss = (thrustor_range * surge_starboard) + thrustor_neutral
+    fh = (thrustor_range * heave_front) + thrustor_neutral
+    ah = (thrustor_range * heave_aft) + thrustor_neutral
+    
+    ps = truncate(ps, thrustor_min, thrustor_max)
+    ss = truncate(ss, thrustor_min, thrustor_max)
+    fh = truncate(fh, thrustor_min, thrustor_max)
+    ah = truncate(ah, thrustor_min, thrustor_max)
+    
+    print(ps)
+    print(ss)
+    print(fh)
+    print(ah)
+    print()
+    
+    # if abs(heave_front) < .05:
+    #     heave_front = 0
+    # if abs(heave_aft) < .05:
+    #     heave_aft = 0
+    # if abs(surge_port) < .05:
+    #     surge_port = 0
+    # if abs(surge_starboard) < .05:
+    #     surge_starboard = 0
 
     data = bytearray()
-    data.append(int((1000 + ps)/256))
-    data.append(int((1000 + ps)%256))
-    data.append(int((1000 + ss)/256))
-    data.append(int((1000 + ss)%256))
-    data.append(int((1000 + fh)/256))
-    data.append(int((1000 + fh)%256))
-    data.append(int((1000 + ah)/256))
-    data.append(int((1000 + ah)%256))
+    data.append(int(ps/256))
+    data.append(int(ps%256))
+    data.append(int(ss/256))
+    data.append(int(ss%256))
+    data.append(int(fh/256))
+    data.append(int(fh%256))
+    data.append(int(ah/256))
+    data.append(int(ah%256))
     stembotConn.sendall(data)
 
 battery = 0
@@ -71,10 +100,12 @@ def main():
             stembotConn = None
             sleep(1)
     print('Connected!')
+    print('Press Control+C to quit')
 
     rospy.Subscriber('/joy', Joy, joyCB, queue_size=1)
 
     while not rospy.is_shutdown():
+        pass
         readable, writable, exceptional = select.select([stembotConn], [], [], 0)
         
         for a in readable:

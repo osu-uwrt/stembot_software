@@ -3,9 +3,9 @@ import socket
 import select
 from time import sleep
 
+import adafruit_pca9685
 import board
 import busio
-import adafruit_pca9685
 
 PORTSURGE = 0
 STBDSURGE = 1
@@ -30,7 +30,7 @@ def stop_thrusters():
 	
 	print('Stopping thrusters')
 	# Allow all accelerations and stop thrusters (4000 full back, 8000 full forward)
-	neutral_signal = 1000
+	neutral_signal = 1500
 	hat.channels[PORTSURGE].duty_cycle = pulse_to_duty(neutral_signal)
 	hat.channels[STBDSURGE].duty_cycle = pulse_to_duty(neutral_signal)
 	hat.channels[FWDHEAVE].duty_cycle = pulse_to_duty(neutral_signal)
@@ -100,12 +100,28 @@ while 1:
 				continue
 
 			while len(data) >= 8:
-				hat.channels[PORTSURGE].duty_cycle = pulse_to_duty(data[0] * 256 + data[1])
-				hat.channels[STBDSURGE].duty_cycle = pulse_to_duty(data[2] * 256 + data[3])
-				hat.channels[FWDHEAVE].duty_cycle = pulse_to_duty(data[4] * 256 + data[5])
-				hat.channels[AFTHEAVE].duty_cycle = pulse_to_duty(data[6] * 256 + data[7])
+				portSurgeUs = data[0] * 256 + data[1]
+				stbdSurgeUs = data[2] * 256 + data[3]
+				fwdHeaveUs  = data[4] * 256 + data[5]
+				aftHeaveUs  = data[6] * 256 + data[7]
+
+				print(f"port surge: {portSurgeUs}")
+				print(f"stbd surge: {stbdSurgeUs}")
+				print(f"fwd heave:  {fwdHeaveUs}")
+				print(f"aft heave:  {aftHeaveUs}")
+
+				hat.channels[PORTSURGE].duty_cycle = pulse_to_duty(portSurgeUs)
+				hat.channels[STBDSURGE].duty_cycle = pulse_to_duty(stbdSurgeUs)
+				hat.channels[FWDHEAVE].duty_cycle = pulse_to_duty(fwdHeaveUs)
+				hat.channels[AFTHEAVE].duty_cycle = pulse_to_duty(aftHeaveUs)
+				
+				#print(f"port surge: {hat.channels[PORTSURGE].duty_cycle}")
+				#print(f"stbd surge: {hat.channels[STBDSURGE].duty_cycle}")
+				#print(f"fwd  heave: {hat.channels[FWDHEAVE].duty_cycle}")
+				#print(f"aft  heave: {hat.channels[AFTHEAVE].duty_cycle}")
+				
 				data = data[8:]
-			
+
 	#Read Voltage
 	#voltage = 0
 	#send_voltage(voltage)

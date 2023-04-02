@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source /opt/ros/noetic/setup.bash
+source /home/uwrt/stembot_software/devel/setup.bash
+
+roslaunch stembot stem.launch address:=stembot-$1.local
+

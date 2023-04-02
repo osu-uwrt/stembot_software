@@ -1,0 +1,11 @@
+[Unit]
+Description=Stembot driver service
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=on-abort
+ExecStart=/usr/bin/python3 /home/pi/go.py
+
+[Install]
+WantedBy=multi-user.target
